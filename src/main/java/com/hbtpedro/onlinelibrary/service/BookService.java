@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BookService {
 
-    private static final Logger logger = LogManager.getLogger(BookService.class);
+
 
     private final BookRepository bookRepository;
 
@@ -80,7 +80,7 @@ public class BookService {
     @Cacheable(cacheNames = "rating")
     public List<BookAverageRatingDTO> getTopBooksByAverageRating() {
         simulateServerDelay();
-        List<Object[]> topBooksByAverageRating = bookRepository.findTop5BooksByAverageRating();
+        List<Object[]> topBooksByAverageRating = bookRepository.findTopBooksByAverageRating();
 
         return topBooksByAverageRating.stream()
                 .map(result -> {

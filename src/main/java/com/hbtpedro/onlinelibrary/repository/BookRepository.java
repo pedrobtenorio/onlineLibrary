@@ -15,7 +15,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "FROM Review r " +
             "GROUP BY r.book " +
             "ORDER BY averageRating DESC")
-    List<Object[]> findTop5BooksByAverageRating();
+    List<Object[]> findTopBooksByAverageRating();
 
     @Query("SELECT b, " +
             "       COUNT(c) AS availableCopies, " +
