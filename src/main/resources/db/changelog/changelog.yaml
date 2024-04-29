@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/0000_initial_schema.sql
+  - include:
+      file: db/changelog/0001_populate_initial_db.sql
+  - include:
+      file: db/changelog/0003_insert_more_books.sql
