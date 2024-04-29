@@ -50,8 +50,7 @@ public class BookService {
 
     @CacheEvict(cacheNames = "books", key = "'all'")
     public Book saveBook(Book book) {
-        Book savedBook = bookRepository.save(book);
-        return savedBook;
+        return bookRepository.save(book);
     }
 
     @Caching(evict = {

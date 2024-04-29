@@ -9,12 +9,15 @@ import com.hbtpedro.onlinelibrary.domain.enums.CopyStatus;
 import com.hbtpedro.onlinelibrary.repository.ReservationRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +26,8 @@ public class ReservationService {
     private final UserService userService;
     private final BookCopyService bookCopyService;
     private final BookService bookService;
+    private static final Logger logger = LogManager.getLogger(ReservationService.class);
+
 
 
     public List<Reservation> getAllReservations() {
@@ -31,8 +36,11 @@ public class ReservationService {
 
     public Reservation getReservationById(Long id) {
         return reservationRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Reservation with id" + id + "not found"));
+                .orElseThrow(() -> {
+                    String errorMessage = "Reservation with id " + id + " not found";
+                    logger.error(errorMessage);
+                    return new ResponseStatusException(HttpStatus.NOT_FOUND, errorMessage);
+                });
     }
 
     public List<Reservation> getReservationByUserId(Long userId) {
@@ -60,7 +68,11 @@ public class ReservationService {
         BookCopy availableCopy = bookCopies.stream()
                 .filter(copy -> copy.getStatus() == CopyStatus.AVAILABLE)
                 .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No available copies of the book"));
+                .orElseThrow(() -> {
+                    String errorMessage = "No available copies of the book";
+                    logger.error(errorMessage);
+                    return new ResponseStatusException(HttpStatus.NOT_FOUND, errorMessage);
+                });
 
         Reservation reservation = Reservation.builder()
                 .user(user)
